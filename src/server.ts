@@ -1,4 +1,4 @@
-import express from 'express';
+import express , {Request, Response} from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 import StatusCodes from 'http-status-codes';
@@ -28,42 +28,42 @@ import StatusCodes from 'http-status-codes';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
-  app.get("/filteredimage", async (req, res) => {
+  app.get("/filteredimage", async (request: Request , response: Response) => {
 
     // Get the image url from query param
-    const imageUrl = req.query.image_url;
+    const { image_url } :{image_url:string} = request.query
 
     // 1. validate the image_url query
-    if (!isImgUrl(imageUrl)) {
+    if (!isImgUrl(image_url)) {
       // Bad request response
-      res.statusCode = StatusCodes.BAD_REQUEST;
-      res.send("The image url invalid!!");
+      response.statusCode = StatusCodes.BAD_REQUEST;
+      response.send("The image url invalid!!");
       return;
     }
 
     // 2. call filterImageFromURL(image_url) to filter the image
-    await filterImageFromURL(imageUrl).then(
+    await filterImageFromURL(image_url).then(
 
       // Read image successfull
       function(image) {
         // 3. send the resulting file in the response
-        res.sendFile(image, async (error) => {
+        response.sendFile(image, async (error: Error) => {
           if (error) {
             // Internal server error response
-            res.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
-            res.send(error.message);
+            response.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+            response.send(error.message);
           } else {
 
             // 4. deletes any files on the server on finish of the response
             await deleteLocalFiles([image]);
-            res.statusCode = StatusCodes.OK;
+            response.statusCode = StatusCodes.OK;
           }
         });
       },
-      function(error) { // Read image failed
+      function(error: Error) { // Read image failed
         // Internal server error response
-        res.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
-        res.send(error.message);
+        response.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+        response.send(error.message);
       }
     );
   });
@@ -77,8 +77,8 @@ import StatusCodes from 'http-status-codes';
   
   // Root Endpoint
   // Displays a simple message to the user
-  app.get( "/", async ( req, res ) => {
-    res.send("try GET /filteredimage?image_url={{}}")
+  app.get( "/", async (request: Request , response: Response) => {
+    response.send("try GET /filteredimage?image_url={{}}")
   } );
   
 

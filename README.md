@@ -50,7 +50,7 @@ Add your own domain name and have it point to the running services (try adding a
 ## Result
 
 ### Access endpoint of elastic beanstalk deployment
-http://image-filter-starter-code-pj2.us-east-1.elasticbeanstalk.com/
+http://image-filter-starter-code-pj2.us-east-1.elasticbeanstalk.com
 
 ### Sample image URL
 https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg
