@@ -68,9 +68,10 @@ import StatusCodes from 'http-status-codes';
     );
   });
 
+  // check image url
   function isImgUrl(url : any) {
     if(typeof url !== 'string' || !url || url === "") return false;
-    return(url.match(/^http[^\?]*.(jpg|jpeg|png|bmp|tiff|gif)(\?(.*))?$/gmi) != null);
+    return(url.match(/^http[^\?]*.(jpg|jpeg|png|bmp)(\?(.*))?$/gmi) != null);
   }
   //! END @TODO1
   
