@@ -17,9 +17,9 @@ export async function filterImageFromURL(inputURL: string): Promise<string> {
       const buffers = (await axios({ url: inputURL, responseType: "arraybuffer" })).data as Buffer;
       const photo = await Jimp.read(buffers);
       await photo
-        //.resize(256, 256) // resize
+        .resize(256, 256) // resize
         .quality(60) // set JPEG quality
-        //.greyscale() // set greyscale
+        .greyscale() // set greyscale
         .write(__dirname + outpath, (img) => {
           resolve(__dirname + outpath);
         });
